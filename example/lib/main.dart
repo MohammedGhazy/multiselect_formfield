@@ -54,6 +54,15 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 padding: EdgeInsets.all(16),
                 child: MultiSelectFormField(
+                  child: (l){
+                    return Row(
+                        //'lenght: $l'
+                      children: [
+                        Icon(Icons.pages),
+                        Text('add extra'),
+                      ],
+                    );
+                  },
                   autovalidate: false,
                   titleText: 'My workouts',
                   validator: (value) {

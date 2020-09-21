@@ -20,7 +20,7 @@ class MultiSelectFormField extends FormField<dynamic> {
   final String cancelButtonLabel;
   final Color fillColor;
   final InputBorder border;
-
+  final Widget Function(int) child;
   MultiSelectFormField(
       {FormFieldSetter<dynamic> onSaved,
       FormFieldValidator<dynamic> validator,
@@ -34,6 +34,7 @@ class MultiSelectFormField extends FormField<dynamic> {
       this.dataSource,
       this.textField,
       this.valueField,
+        this.child,
       this.change,
       this.open,
       this.close,
@@ -93,64 +94,7 @@ class MultiSelectFormField extends FormField<dynamic> {
                   state.save();
                 }
               },
-              child: InputDecorator(
-                decoration: InputDecoration(
-                  filled: true,
-                  errorText: state.hasError ? state.errorText : null,
-                  errorMaxLines: 4,
-                  fillColor: fillColor ?? Theme.of(state.context).canvasColor,
-                  border: border ?? UnderlineInputBorder(),
-                ),
-                isEmpty: state.value == null || state.value == '',
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                              child: Text(
-                            titleText,
-                            style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                          )),
-                          required
-                              ? Padding(padding:EdgeInsets.only(top:5, right: 5), child: Text(
-                                  ' *',
-                                  style: TextStyle(
-                                    color: Colors.red.shade700,
-                                    fontSize: 17.0,
-                                  ),
-                                ),
-                              )
-                              : Container(),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.black87,
-                            size: 25.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                    state.value != null && state.value.length > 0
-                        ? Wrap(
-                            spacing: 8.0,
-                            runSpacing: 0.0,
-                            children: _buildSelectedOptions(state),
-                          )
-                        : new Container(
-                            padding: EdgeInsets.only(top: 4),
-                            child: Text(
-                              hintText,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey.shade500,
-                              ),
-                            ),
-                          )
-                  ],
-                ),
+              child: child(state.value.length??0
               ),
             );
           },
